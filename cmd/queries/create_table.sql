@@ -37,4 +37,4 @@ INSERT INTO snippets (
 );
 
 CREATE USER 'web'@'localhost';
-GRANT SELECT, INSERT, UPDATE ON snippetbos.* TO 'web'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON snippetbox.* TO 'web'@'localhost';
