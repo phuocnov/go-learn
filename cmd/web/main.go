@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"flag"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/phuocnov/golang-webserver/pkg/models/mysql"
 	"log"
 	"net/http"
 	"os"
@@ -12,11 +13,12 @@ import (
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	snippets *mysql.SnippetModel
 }
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	dsn := flag.String("dsn", "web@/snippetbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "web:@/snippetbox?parseTime=true", "MySQL data source name")
 
 	flag.Parse()
 
@@ -32,6 +34,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		snippets: &mysql.SnippetModel{DB: db},
 	}
 
 	srv := &http.Server{
