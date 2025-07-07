@@ -71,7 +71,6 @@ func (m *SnippetModel) Lastest() ([]*models.Snippet, error) {
 			return nil, err
 		}
 
-		// Append it to the slice of snippets.
 		snippets = append(snippets, s)
 	}
 
