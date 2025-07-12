@@ -45,6 +45,7 @@ func main() {
 
 	session := sessions.New([]byte(*secret))
 	session.Lifetime = 12 * time.Hour
+	session.Secure = true
 
 	app := &application{
 		errorLog:      errorLog,
@@ -60,8 +61,8 @@ func main() {
 		Handler:  app.routes(),
 	}
 
-	infoLog.Println("Starting server on %s", *addr)
-	err = srv.ListenAndServe()
+	infoLog.Printf("Starting server on %s", *addr)
+	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
 	errorLog.Fatal(err)
 }
 func openDB(dsn string) (*sql.DB, error) {
