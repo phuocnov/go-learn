@@ -38,3 +38,17 @@ INSERT INTO snippets (
 
 CREATE USER 'web'@'localhost';
 GRANT SELECT, INSERT, UPDATE ON snippetbox.* TO 'web'@'localhost';
+
+-- CREATE USER TABLE
+
+CREATE TABLE users (
+  id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(225) NOT NULL,
+  email VARCHAR(225) NOT NULL,
+  hashed_password VARCHAR(225) NOT NULL,
+  created DATETIME NOT NULL
+);
+
+ALTER TABLE 
+ALTER TABLE users
+   ADD CONSTRAINT users_uc_email UNIQUE (email);
