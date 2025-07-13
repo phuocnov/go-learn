@@ -80,15 +80,46 @@ func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request
 }
 
 func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Create a new user")
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("name", "email", "password")
+	form.MinLength("password", 10)
+	form.MatchsPattern("email", forms.EmailRX)
+
+	if !form.Valid() {
+		app.render(w, r, "signup.page.html", &templateData{
+			Form: form,
+		})
+	}
+
+	err = app.users.Insert(form.Get("name"), form.Get("email"), form.Get("password"))
+	if err == models.ErrDuplicateEmail {
+		form.Errors.Add("email", "Address is already in use")
+		app.render(w, r, "signup.page.html", &templateData{
+			Form: form,
+		})
+		return
+	} else if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.session.Put(r, "flash", "Sign up successfully!")
+	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
 
 func (app *application) signupUserForm(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Display new user form")
+	app.render(w, r, "signup.page.html", &templateData{
+		Form: forms.New(nil),
+	})
 }
 
 func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Display login form")
+	fmt.Println(w, "Login user form")
 }
 
 func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
