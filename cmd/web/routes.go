@@ -26,5 +26,8 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.Dir("./ui/static"))
 	mux.Get("/static/", http.StripPrefix("/static", fileServer))
 
+	// Add a ping route for health checks
+	mux.Get("/ping", http.HandlerFunc(app.ping))
+
 	return standardMiddleware.Then(mux)
 }
