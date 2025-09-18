@@ -12,14 +12,15 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golangcollege/sessions"
+	"github.com/phuocnov/golang-webserver/pkg/models"
 	"github.com/phuocnov/golang-webserver/pkg/models/mysql"
 )
 
 type application struct {
 	errorLog      *log.Logger
 	infoLog       *log.Logger
-	snippets      *mysql.SnippetModel
-	users         *mysql.UserModel
+	snippets      models.SnippetModelInterface
+	users         models.UserModelInterface
 	session       *sessions.Session
 	templateCache map[string]*template.Template
 }

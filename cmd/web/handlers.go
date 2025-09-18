@@ -10,7 +10,7 @@ import (
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	s, err := app.snippets.Lastest()
+	s, err := app.snippets.Latest()
 	if err != nil {
 		app.serverError(w, err)
 		return
