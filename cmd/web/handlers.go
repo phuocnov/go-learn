@@ -62,7 +62,6 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	id, err := app.snippets.Insert(form.Get("title"), form.Get("content"), form.Get("expires"))
-
 	if err != nil {
 		app.serverError(w, err)
 		return
@@ -160,5 +159,12 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Logout user form")
+	app.session.Remove(r, "userID")
+
+	app.session.Put(r, "flash", "You've been logout")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func ping(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("OK"))
 }
