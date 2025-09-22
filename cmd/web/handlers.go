@@ -79,6 +79,7 @@ func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request
 }
 
 func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("signupUser handler activated")
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
@@ -93,6 +94,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		app.render(w, r, "signup.page.html", &templateData{
 			Form: form,
 		})
+		return
 	}
 
 	err = app.users.Insert(form.Get("name"), form.Get("email"), form.Get("password"))

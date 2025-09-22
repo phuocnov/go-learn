@@ -8,6 +8,8 @@ import (
 )
 
 func secureHeaders(next http.Handler) http.Handler {
+	fmt.Println("secure Header middleware activated")
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-XSS-Protection", "1; mainmode=block")
 		w.Header().Set("X-Frame-Options", "deny")
