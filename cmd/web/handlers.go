@@ -47,6 +47,7 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
+		return
 	}
 
 	form := forms.New(r.PostForm)
@@ -83,6 +84,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
+		return
 	}
 
 	form := forms.New(r.PostForm)
@@ -129,6 +131,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
+		return
 	}
 
 	form := forms.New(r.PostForm)
@@ -140,6 +143,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 		app.render(w, r, "login.page.html", &templateData{
 			Form: form,
 		})
+		return
 	}
 
 	id, err := app.users.Authenticate(form.Get("email"), form.Get("password"))

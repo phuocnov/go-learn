@@ -9,7 +9,6 @@ import (
 	"net/http/cookiejar"
 	"net/http/httptest"
 	"net/url"
-	"os"
 	"regexp"
 	"testing"
 
@@ -28,12 +27,9 @@ func newTestApplication(t *testing.T) *application {
 	sessions.Lifetime = 12 * 60 * 60 // 12 hours
 	sessions.Secure = true
 
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-
 	return &application{
-		errorLog:      errorLog,
-		infoLog:       infoLog,
+		errorLog:      log.New(io.Discard, "", 0),
+		infoLog:       log.New(io.Discard, "", 0),
 		session:       sessions,
 		snippets:      &mock.SnippetModel{},
 		users:         &mock.UserModel{},
@@ -80,11 +76,9 @@ func (ts *testServer) get(t *testing.T, urlPath string) (int, http.Header, []byt
 func (ts *testServer) postForm(t *testing.T, urlPath string, form url.Values) (int, http.Header, []byte) {
 	rs, err := ts.Client().PostForm(ts.URL+urlPath, form)
 	if err != nil {
-		fmt.Println(err.Error())
 		t.Fatal(err)
 	}
 	defer rs.Body.Close()
-
 	body, err := io.ReadAll(rs.Body)
 
 	fmt.Printf("%s", body)

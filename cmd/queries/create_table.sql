@@ -1,3 +1,8 @@
+CREATE DATABASE IF NOT EXISTS test_snippetbox CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE USER 'snippetbox'@'localhost' IDENTIFIED BY 'pass';
+GRANT ALL PRIVILEGES ON test_snippetbox.* TO 'snippetbox'@'localhost';
+ALTER USER 'snippetbox'@'localhost' IDENTIFIED BY 'pass';
+
 CREATE TABLE snippets (
   id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(100) NOT NULL,
